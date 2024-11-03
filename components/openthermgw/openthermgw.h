@@ -75,8 +75,8 @@ class OpenthermGW: public PollingComponent
     
     public:
 
-    static OpenTherm *mOT{nullptr};
-    static OpenTherm *sOT{nullptr};
+    static OpenTherm *mOT = nullptr;
+    static OpenTherm *sOT = nullptr;
 
     sensor::Sensor *master_in_pin_sensor = new sensor::Sensor();
     sensor::Sensor *master_out_pin_sensor = new sensor::Sensor();
@@ -122,16 +122,11 @@ class OpenthermGW: public PollingComponent
     static std::map<int, std::vector<OverrideBinarySwitchInfo *> *> override_binary_switch_map;
     static std::map<int, std::vector<OverrideNumericSwitchInfo *> *> override_numeric_switch_map;
 
-    static switch_::Switch *switch_dhw_pump_override{nullptr};
-    static switch_::Switch *switch_dhw_pump_override_mode{nullptr};
-
     void set_master_in_pin(uint8_t pin);
     void set_master_out_pin(uint8_t pin);
     void set_slave_in_pin(uint8_t pin);
     void set_slave_out_pin(uint8_t pin);
-    
-    void set_switch_dhw_pump_override(switch_::Switch *s)                   { switch_dhw_pump_override              = s; }
-    void set_switch_dhw_pump_override_mode(switch_::Switch *s)              { switch_dhw_pump_override_mode         = s; }
+        
     void add_sensor_acme(sensor::Sensor *s, int messageid, bool valueonrequest, int valuetype);
     void add_sensor_acme_binary(binary_sensor::BinarySensor *s, int messageid, bool valueonrequest, int bit);
     void add_override_switch(openthermgw::OverrideBinarySwitch *s, int messageid, bool valueonrequest, int bit, openthermgw::SimpleSwitch *v);
