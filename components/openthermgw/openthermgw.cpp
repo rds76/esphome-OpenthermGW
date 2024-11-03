@@ -38,7 +38,7 @@ namespace openthermgw {
 
     void OpenthermGW::processRequest(unsigned long request, OpenThermResponseStatus status)
     {
-        int requestDataID = static_cast<int>(<mOT->getDataID(request));
+        int requestDataID = static_cast<int>(mOT->getDataID(request));
         unsigned char requestMessageType = static_cast<unsigned char>(mOT->getMessageType(request));
         unsigned short requestDataValue = request & 0xffff;
 
