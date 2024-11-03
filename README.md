@@ -28,7 +28,7 @@ The gateway is an ESPHome external component. To use it, you only need to includ
 
 ```yaml
 external_components:
-  - source: github://rds76/esphome-openthermgw@release
+  - source: github://rds76/esphome-openthermgw@latest-branch-othlib1.1.5
     components: [ openthermgw ]
 ```
 
