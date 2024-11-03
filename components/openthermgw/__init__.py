@@ -17,9 +17,8 @@ CONF_SLAVE_OUT_PIN = "slave_out_pin"
 CONF_OPENTHERM_ID = "opentherm_id"
 
 opentherm_ns = cg.esphome_ns.namespace("openthermgw")
-local_switch_ns = cg.esphome_ns.namespace("local_switch")
 
-OpenThermGW = opentherm_ns.class_("OpenthermGW", cg.Component)
+OpenThermGW = opentherm_ns.class_("OpenthermGW", cg.PollingComponent)
 
 SimpleSwitch = opentherm_ns.class_(
     "SimpleSwitch", switch.Switch, cg.Component
@@ -42,6 +41,17 @@ OverrideBinarySwitch = opentherm_ns.class_(
     "OverrideBinarySwitch", switch.Switch, cg.Component
 )
 
+VALUE_TYPE = {
+    "UNSIGNED": 0,
+    "SIGNED": 1,
+    "FLOAT": 2,
+    "UNSIGNED_BYTE_L": 3,
+    "UNSIGNED_BYTE_H": 4,
+    "SIGNED_BYTE_L": 5,
+    "SIGNED_BYTE_H": 6,
+    "REQ_RESP": 7,
+}
+
 AUTO_LOAD = ['sensor', 'binary_sensor', 'switch', 'number']
 MULTI_CONF = False
 
@@ -53,7 +63,8 @@ CONF_SCHEMA_ACME_OT = sensor.sensor_schema().extend(
     {
         cv.Required(CONF_SENSOR_ACME_OT_MESSAGE_ID): cv.int_range(0, 254),
         cv.Optional(CONF_SENSOR_ACME_OT_VALUE_ON_REQUEST, default='false'): cv.boolean,
-        cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 7), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB, 7=REQUEST/RESPONSE
+    #    cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 7), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB, 7=REQUEST/RESPONSE
+        cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default="UNSIGNED"): cv.enum(VALUE_TYPE, upper=True, space="_")
     }
     )
 
@@ -133,7 +144,8 @@ CONF_SCHEMA_ACME_OT_OVERRIDE_NUMERIC_SWITCH = cv.maybe_simple_value(
             {
                 cv.Required(CONF_SENSOR_ACME_OT_MESSAGE_ID): cv.int_range(0, 254),
                 cv.Optional(CONF_SENSOR_ACME_OT_VALUE_ON_REQUEST, default='true'): cv.boolean,
-                cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 6), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB
+                # cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 6), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB
+                cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default="UNSIGNED"): cv.enum(VALUE_TYPE, upper=True, space="_"),
                 cv.Required(CONF_SENSOR_ACME_OT_OVERRIDE_NUMERIC_VALUE): CONF_SCHEMA_ACME_OT_OVERRIDE_NUMBER,
             }
         ),
@@ -161,7 +173,7 @@ CONFIG_SCHEMA = cv.Schema(
             cv.ensure_list(CONF_SCHEMA_ACME_OT_OVERRIDE_NUMERIC_SWITCH), cv.Length(min=1, max=200)
             ),
     }
-).extend(cv.COMPONENT_SCHEMA)
+).extend(cv.polling_component_schema("60s"))
 
 
 
