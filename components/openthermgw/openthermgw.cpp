@@ -101,7 +101,7 @@ namespace openthermgw {
         if (response && !sOT->parity(response))
         {
             sOT->sendResponse(response);
-            ESP_LOGD(TAG, "Opentherm response [MessageType: %s, DataID: %d, Data: %x]", sOT->messageTypeToString(sOT->getMessageType(response)), sOT->getDataID(response), response&0xffff);
+            ESP_LOGD(TAG, "Opentherm response [MessageType: %s, DataID: %d, Data: %x]", sOT->messageTypeToString(sOT->getMessageType(response)), static_cast<int>(sOT->getDataID(response)), response&0xffff);
 
             // only if ACK reponse is received, process the data.
             if(sOT->isValidResponse(response))
@@ -109,7 +109,7 @@ namespace openthermgw {
                 ESP_LOGD(TAG, "Opentherm response valid, processing sensors...");
                 
                 // acme
-                auto itSensorList = acme_sensor_map.find(sOT->getDataID(response));
+                auto itSensorList = acme_sensor_map.find(static_cast<int>(sOT->getDataID(response)));
                 std::vector<AcmeSensorInfo *> *pSensorList = itSensorList != acme_sensor_map.end() ? itSensorList->second : nullptr;
                 if(pSensorList != nullptr)
                 {
@@ -170,7 +170,7 @@ namespace openthermgw {
                 }
 
                 // acme binary
-                auto itBinarySensorList = acme_binary_sensor_map.find(sOT->getDataID(response));
+                auto itBinarySensorList = acme_binary_sensor_map.find(static_cast<int>(sOT->getDataID(response)));
                 std::vector<AcmeBinarySensorInfo *> *pBinarySensorList = itBinarySensorList != acme_binary_sensor_map.end() ? itBinarySensorList->second : nullptr;
                 if(pBinarySensorList != nullptr)
                 {
