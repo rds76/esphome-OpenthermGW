@@ -63,7 +63,8 @@ CONF_SCHEMA_ACME_OT = sensor.sensor_schema().extend(
     {
         cv.Required(CONF_SENSOR_ACME_OT_MESSAGE_ID): cv.int_range(0, 254),
         cv.Optional(CONF_SENSOR_ACME_OT_VALUE_ON_REQUEST, default='false'): cv.boolean,
-        cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 7), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB, 7=REQUEST/RESPONSE
+    #    cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 7), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB, 7=REQUEST/RESPONSE
+        cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default="UNSIGNED"): cv.enum(VALUE_TYPE, upper=True, space="_")
     }
     )
 
@@ -143,7 +144,8 @@ CONF_SCHEMA_ACME_OT_OVERRIDE_NUMERIC_SWITCH = cv.maybe_simple_value(
             {
                 cv.Required(CONF_SENSOR_ACME_OT_MESSAGE_ID): cv.int_range(0, 254),
                 cv.Optional(CONF_SENSOR_ACME_OT_VALUE_ON_REQUEST, default='true'): cv.boolean,
-                cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 6), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB
+                # cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default=0): cv.int_range(0, 6), # 0=u16, 1=s16, 2=f16, 3=u8LB, 4=u8HB, 5=s8LB, 6=s8HB
+                cv.Optional(CONF_SENSOR_ACME_OT_VALUE_TYPE, default="UNSIGNED"): cv.enum(VALUE_TYPE, upper=True, space="_"),
                 cv.Required(CONF_SENSOR_ACME_OT_OVERRIDE_NUMERIC_VALUE): CONF_SCHEMA_ACME_OT_OVERRIDE_NUMBER,
             }
         ),
