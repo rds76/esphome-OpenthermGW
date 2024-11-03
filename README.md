@@ -88,14 +88,14 @@ Sensor variables are inherited from ESPHome [Sensor component](https://esphome.i
 
 - **message_id** (*Required*, positive int): Opentherm Message ID to capture in the sensor
 - **value_type** (*Optional*, default `UNSIGNED`): Type of the value to retrieve from the Opentherm message. The types supported are:
-  - **`UNSIGNED`** *(u16)* unsigned 16 bit integer
-  - **`SIGNED`** *(s16)* signed 16 bit integer
-  - **`FLOAT`** *(f16)* 16 bit float
-  - **`UNSIGNED_BYTE_L`** *(u8LB)* unsigned 8 bit integer in the lower byte of the message data
-  - **`UNSIGNED_BYTE_H`** *(u8HB)* unsigned 8 bit integer in the higher byte of the message data
-  - **`SIGNED_BYTE_L`** *(s8LB)* signed 8 bit integer in the lower byte of the message data
-  - **`SIGNED_BYTE_H`** *(s8HB)* signed 8 bit integer in the higher byte of the message data
-  - **`REQ_RESP`** Request or response code of the Opentherm message. The value is directly read from the message. Possible values are:
+  - `UNSIGNED` *(u16)* unsigned 16 bit integer
+  - `SIGNED` *(s16)* signed 16 bit integer
+  - `FLOAT` *(f16)* 16 bit float
+  - `UNSIGNED_BYTE_L` *(u8LB)* unsigned 8 bit integer in the lower byte of the message data
+  - `UNSIGNED_BYTE_H` *(u8HB)* unsigned 8 bit integer in the higher byte of the message data
+  - `SIGNED_BYTE_L` *(s8LB)* signed 8 bit integer in the lower byte of the message data
+  - `SIGNED_BYTE_H` *(s8HB)* signed 8 bit integer in the higher byte of the message data
+  - `REQ_RESP` Request or response code of the Opentherm message. The value is directly read from the message. Possible values are:
     - Master-To-Slave (request)
       - 0 READ-DATA
       - 1 WRITE-DATA
@@ -183,30 +183,30 @@ openthermgw:
       unit_of_measurement: "°C"
       message_id: 1
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME ASF flags / OEM Fault code"
       message_id: 5
       value_on_request: false
-      value_type: 0
+      value_type: UNSIGNED
     - name: "ACME ASF flags / OEM Fault code response"
       message_id: 5
       value_on_request: false
-      value_type: 7
+      value_type: REQ_RESP
     - name: "ACME Control setpoint 2"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 8
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME OEM diagnostic code"
       message_id: 115
       value_on_request: false
-      value_type: 0
+      value_type: UNSIGNED
     - name: "ACME OEM diagnostic code response"
       message_id: 115
       value_on_request: false
-      value_type: 7
+      value_type: REQ_RESP
 
     - name: "ACME Room setpoint"
       device_class: "temperature"
@@ -214,21 +214,21 @@ openthermgw:
       unit_of_measurement: "°C"
       message_id: 16
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Relative modulation level"
       device_class: "signal_strength"
       accuracy_decimals: 0
       unit_of_measurement: "%"
       message_id: 17
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME CH water pressure"
       device_class: "pressure"
       accuracy_decimals: 2
       unit_of_measurement: "bar"
       message_id: 18
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
 
     - name: "ACME Room setpoint CH2"
       device_class: "temperature"
@@ -236,56 +236,56 @@ openthermgw:
       unit_of_measurement: "°C"
       message_id: 23
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Room temperature"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 24
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Boiler water temperature"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 25
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME DHW temperature"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 26
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Outside temperature"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 27
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Return water temperature"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 28
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Flow temperature CH2"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 31
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Exhaust temperature"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 33
       value_on_request: false
-      value_type: 1
+      value_type: SIGNED
 
     - name: "ACME DHW setpoint"
       device_class: "temperature"
@@ -293,7 +293,7 @@ openthermgw:
       unit_of_measurement: "°C"
       message_id: 56
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
 
     - name: "ACME Max CH water setpoint"
       device_class: "temperature"
@@ -301,7 +301,7 @@ openthermgw:
       unit_of_measurement: "°C"
       message_id: 57
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
 
   acme_opentherm_binary_sensors:
     - name: "ACME Boiler fault"
