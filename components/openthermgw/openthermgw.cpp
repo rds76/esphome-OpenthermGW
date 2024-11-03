@@ -3,10 +3,10 @@
 OpenTherm *esphome::openthermgw::OpenthermGW::mOT = nullptr;
 OpenTherm *esphome::openthermgw::OpenthermGW::sOT = nullptr;
 
-std::map<int, std::vector<esphome::openthermgw::OpenthermGW::AcmeSensorInfo *> *> esphome::openthermgw::OpenthermGW::acme_sensor_map;
-std::map<int, std::vector<esphome::openthermgw::OpenthermGW::AcmeBinarySensorInfo *> *> esphome::openthermgw::OpenthermGW::acme_binary_sensor_map;
-std::map<int, std::vector<esphome::openthermgw::OpenthermGW::OverrideBinarySwitchInfo *> *> esphome::openthermgw::OpenthermGW::override_binary_switch_map;
-std::map<int, std::vector<esphome::openthermgw::OpenthermGW::OverrideNumericSwitchInfo *> *> esphome::openthermgw::OpenthermGW::override_numeric_switch_map;
+std::map<byte, std::vector<esphome::openthermgw::OpenthermGW::AcmeSensorInfo *> *> esphome::openthermgw::OpenthermGW::acme_sensor_map;
+std::map<byte, std::vector<esphome::openthermgw::OpenthermGW::AcmeBinarySensorInfo *> *> esphome::openthermgw::OpenthermGW::acme_binary_sensor_map;
+std::map<byte, std::vector<esphome::openthermgw::OpenthermGW::OverrideBinarySwitchInfo *> *> esphome::openthermgw::OpenthermGW::override_binary_switch_map;
+std::map<byte, std::vector<esphome::openthermgw::OpenthermGW::OverrideNumericSwitchInfo *> *> esphome::openthermgw::OpenthermGW::override_numeric_switch_map;
 
 namespace esphome {
 namespace openthermgw {
@@ -28,7 +28,7 @@ namespace openthermgw {
 
     void OpenthermGW::processRequest(unsigned long request, OpenThermResponseStatus status)
     {
-        int requestDataID = static_cast<int>(mOT->getDataID(request));
+        byte requestDataID = (byte) mOT->getDataID(request);
         unsigned char requestMessageType = static_cast<unsigned char>(mOT->getMessageType(request));
         unsigned short requestDataValue = request & 0xffff;
 
@@ -91,7 +91,7 @@ namespace openthermgw {
         if (response && !sOT->parity(response))
         {
             sOT->sendResponse(response);
-            ESP_LOGD(TAG, "Opentherm response [MessageType: %s, DataID: %d, Data: %x]", sOT->messageTypeToString(sOT->getMessageType(response)), static_cast<int>(sOT->getDataID(response)), response&0xffff);
+            ESP_LOGD(TAG, "Opentherm response [MessageType: %s, DataID: %d, Data: %x]", sOT->messageTypeToString(sOT->getMessageType(response)), (byte) sOT->getDataID(response), response&0xffff);
 
             // only if ACK reponse is received, process the data.
             if(sOT->isValidResponse(response))
@@ -99,7 +99,7 @@ namespace openthermgw {
                 ESP_LOGD(TAG, "Opentherm response valid, processing sensors...");
                 
                 // acme
-                auto itSensorList = acme_sensor_map.find(static_cast<int>(sOT->getDataID(response)));
+                auto itSensorList = acme_sensor_map.find((byte) sOT->getDataID(response));
                 std::vector<AcmeSensorInfo *> *pSensorList = itSensorList != acme_sensor_map.end() ? itSensorList->second : nullptr;
                 if(pSensorList != nullptr)
                 {
@@ -160,7 +160,7 @@ namespace openthermgw {
                 }
 
                 // acme binary
-                auto itBinarySensorList = acme_binary_sensor_map.find(static_cast<int>(sOT->getDataID(response)));
+                auto itBinarySensorList = acme_binary_sensor_map.find((byte) sOT->getDataID(response));
                 std::vector<AcmeBinarySensorInfo *> *pBinarySensorList = itBinarySensorList != acme_binary_sensor_map.end() ? itBinarySensorList->second : nullptr;
                 if(pBinarySensorList != nullptr)
                 {
@@ -247,7 +247,7 @@ namespace openthermgw {
     }
 
 
-    void OpenthermGW::add_sensor_acme(sensor::Sensor *s, int messageid, bool valueonrequest, int valuetype)
+    void OpenthermGW::add_sensor_acme(sensor::Sensor *s, byte messageid, bool valueonrequest, int valuetype)
     {
         AcmeSensorInfo *pAcmeSensorInfo = new AcmeSensorInfo();
         pAcmeSensorInfo->messageID = messageid;
@@ -264,7 +264,7 @@ namespace openthermgw {
         pSensorList->push_back(pAcmeSensorInfo);
     }
 
-    void OpenthermGW::add_sensor_acme_binary(binary_sensor::BinarySensor *s, int messageid, bool valueonrequest, int bit)
+    void OpenthermGW::add_sensor_acme_binary(binary_sensor::BinarySensor *s, byte messageid, bool valueonrequest, int bit)
     {
         AcmeBinarySensorInfo *pAcmeBinarySensorInfo = new AcmeBinarySensorInfo();
         pAcmeBinarySensorInfo->messageID = messageid;
@@ -281,7 +281,7 @@ namespace openthermgw {
         pSensorList->push_back(pAcmeBinarySensorInfo);
     }
 
-    void OpenthermGW::add_override_switch(openthermgw::OverrideBinarySwitch *s, int messageid, bool valueonrequest, int bit, openthermgw::SimpleSwitch *v)
+    void OpenthermGW::add_override_switch(openthermgw::OverrideBinarySwitch *s, byte messageid, bool valueonrequest, int bit, openthermgw::SimpleSwitch *v)
     {
         OverrideBinarySwitchInfo *pOverrideBinarySwitchInfo = new OverrideBinarySwitchInfo();
         pOverrideBinarySwitchInfo->messageID = messageid;
@@ -299,7 +299,7 @@ namespace openthermgw {
         pSwitchList->push_back(pOverrideBinarySwitchInfo);
     }
 
-    void OpenthermGW::add_override_numeric_switch(openthermgw::OverrideBinarySwitch *s, int messageid, bool valueonrequest, int valuetype, openthermgw::SimpleNumber *v)
+    void OpenthermGW::add_override_numeric_switch(openthermgw::OverrideBinarySwitch *s, byte messageid, bool valueonrequest, int valuetype, openthermgw::SimpleNumber *v)
     {
         OverrideNumericSwitchInfo *pOverrideNumericSwitchInfo = new OverrideNumericSwitchInfo();
         pOverrideNumericSwitchInfo->messageID = messageid;
