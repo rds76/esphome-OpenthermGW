@@ -28,7 +28,7 @@ The gateway is an ESPHome external component. To use it, you only need to includ
 
 ```yaml
 external_components:
-  - source: github://Reproduktor/esphome-openthermgw
+  - source: github://rds76/esphome-openthermgw@release
     components: [ openthermgw ]
 ```
 
@@ -58,28 +58,28 @@ For the numeric sensors, you can create a list like this:
       unit_of_measurement: "°C"
       message_id: 1
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Control setpoint 2"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 8
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Room setpoint"
       device_class: "temperature"
       accuracy_decimals: 1
       unit_of_measurement: "°C"
       message_id: 16
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
     - name: "ACME Relative modulation level"
       device_class: "signal_strength"
       accuracy_decimals: 0
       unit_of_measurement: "%"
       message_id: 17
       value_on_request: false
-      value_type: 2
+      value_type: FLOAT
 ```
 
 #### Configuration variables
