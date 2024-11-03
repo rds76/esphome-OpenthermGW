@@ -87,15 +87,15 @@ For the numeric sensors, you can create a list like this:
 Sensor variables are inherited from ESPHome [Sensor component](https://esphome.io/components/sensor/index.html), plus:
 
 - **message_id** (*Required*, positive int): Opentherm Message ID to capture in the sensor
-- **value_type** (*Optional*, positive int range 0-7, default 0): Type of the value to retrieve from the Opentherm message. The types supported are:
-  - **UNSIGNED** *(u16)* unsigned 16 bit integer
-  - **SIGNED** *(s16)* signed 16 bit integer
-  - **FLOAT** *(f16)* 16 bit float
-  - **UNSIGNED_BYTE_L** *(u8LB)* unsigned 8 bit integer in the lower byte of the message data
-  - **UNSIGNED_BYTE_H** *(u8HB)* unsigned 8 bit integer in the higher byte of the message data
-  - **SIGNED_BYTE_L** *(s8LB)* signed 8 bit integer in the lower byte of the message data
-  - **SIGNED_BYTE_H** *(s8HB)* signed 8 bit integer in the higher byte of the message data
-  - **REQ_RESP** Request or response code of the Opentherm message. The value is directly read from the message. Possible values are:
+- **value_type** (*Optional*, default `UNSIGNED`): Type of the value to retrieve from the Opentherm message. The types supported are:
+  - **`UNSIGNED`** *(u16)* unsigned 16 bit integer
+  - **`SIGNED`** *(s16)* signed 16 bit integer
+  - **`FLOAT`** *(f16)* 16 bit float
+  - **`UNSIGNED_BYTE_L`** *(u8LB)* unsigned 8 bit integer in the lower byte of the message data
+  - **`UNSIGNED_BYTE_H`** *(u8HB)* unsigned 8 bit integer in the higher byte of the message data
+  - **`SIGNED_BYTE_L`** *(s8LB)* signed 8 bit integer in the lower byte of the message data
+  - **`SIGNED_BYTE_H`** *(s8HB)* signed 8 bit integer in the higher byte of the message data
+  - **`REQ_RESP`** Request or response code of the Opentherm message. The value is directly read from the message. Possible values are:
     - Master-To-Slave (request)
       - 0 READ-DATA
       - 1 WRITE-DATA
