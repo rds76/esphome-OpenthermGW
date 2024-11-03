@@ -75,8 +75,8 @@ class OpenthermGW: public PollingComponent
     
     public:
 
-    static OpenTherm *mOT = nullptr;
-    static OpenTherm *sOT = nullptr;
+    static OpenTherm *mOT;
+    static OpenTherm *sOT;
 
     sensor::Sensor *master_in_pin_sensor = new sensor::Sensor();
     sensor::Sensor *master_out_pin_sensor = new sensor::Sensor();
