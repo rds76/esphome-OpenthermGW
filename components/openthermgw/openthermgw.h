@@ -85,7 +85,7 @@ class OpenthermGW: public PollingComponent
 
     struct AcmeSensorInfo
     {
-        int messageID;
+        byte messageID;
         bool valueOnRequest;
         int valueType;
         sensor::Sensor *acmeSensor;
@@ -93,7 +93,7 @@ class OpenthermGW: public PollingComponent
 
     struct AcmeBinarySensorInfo
     {
-        int messageID;
+        byte messageID;
         bool valueOnRequest;
         int bit;
         binary_sensor::BinarySensor *acmeSensor;
@@ -101,7 +101,7 @@ class OpenthermGW: public PollingComponent
 
     struct OverrideBinarySwitchInfo
     {
-        int messageID;
+        byte messageID;
         bool valueOnRequest;
         int bit;
         OverrideBinarySwitch *binaryswitch;
@@ -110,27 +110,27 @@ class OpenthermGW: public PollingComponent
 
     struct OverrideNumericSwitchInfo
     {
-        int messageID;
+        byte messageID;
         bool valueOnRequest;
         int valueType;
         OverrideBinarySwitch *binaryswitch;
         openthermgw::SimpleNumber *valuenumber;
     };
 
-    static std::map<int, std::vector<AcmeSensorInfo *> *> acme_sensor_map;
-    static std::map<int, std::vector<AcmeBinarySensorInfo *> *> acme_binary_sensor_map;
-    static std::map<int, std::vector<OverrideBinarySwitchInfo *> *> override_binary_switch_map;
-    static std::map<int, std::vector<OverrideNumericSwitchInfo *> *> override_numeric_switch_map;
+    static std::map<byte, std::vector<AcmeSensorInfo *> *> acme_sensor_map;
+    static std::map<byte, std::vector<AcmeBinarySensorInfo *> *> acme_binary_sensor_map;
+    static std::map<byte, std::vector<OverrideBinarySwitchInfo *> *> override_binary_switch_map;
+    static std::map<byte, std::vector<OverrideNumericSwitchInfo *> *> override_numeric_switch_map;
 
     void set_master_in_pin(uint8_t pin);
     void set_master_out_pin(uint8_t pin);
     void set_slave_in_pin(uint8_t pin);
     void set_slave_out_pin(uint8_t pin);
         
-    void add_sensor_acme(sensor::Sensor *s, int messageid, bool valueonrequest, int valuetype);
-    void add_sensor_acme_binary(binary_sensor::BinarySensor *s, int messageid, bool valueonrequest, int bit);
-    void add_override_switch(openthermgw::OverrideBinarySwitch *s, int messageid, bool valueonrequest, int bit, openthermgw::SimpleSwitch *v);
-    void add_override_numeric_switch(openthermgw::OverrideBinarySwitch *s, int messageid, bool valueonrequest, int valuetype, openthermgw::SimpleNumber *v);
+    void add_sensor_acme(sensor::Sensor *s, byte messageid, bool valueonrequest, int valuetype);
+    void add_sensor_acme_binary(binary_sensor::BinarySensor *s, byte messageid, bool valueonrequest, int bit);
+    void add_override_switch(openthermgw::OverrideBinarySwitch *s, byte messageid, bool valueonrequest, int bit, openthermgw::SimpleSwitch *v);
+    void add_override_numeric_switch(openthermgw::OverrideBinarySwitch *s, byte messageid, bool valueonrequest, int valuetype, openthermgw::SimpleNumber *v);
     
 
     static void IRAM_ATTR mHandleInterrupt();
