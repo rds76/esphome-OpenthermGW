@@ -88,14 +88,14 @@ Sensor variables are inherited from ESPHome [Sensor component](https://esphome.i
 
 - **message_id** (*Required*, positive int): Opentherm Message ID to capture in the sensor
 - **value_type** (*Optional*, positive int range 0-7, default 0): Type of the value to retrieve from the Opentherm message. The types supported are:
-  - **0** *(u16)* unsigned 16 bit integer
-  - **1** *(s16)* signed 16 bit integer
-  - **2** *(f16)* 16 bit float
-  - **3** *(u8LB)* unsigned 8 bit integer in the lower byte of the message data
-  - **4** *(u8HB)* unsigned 8 bit integer in the higher byte of the message data
-  - **5** *(s8LB)* signed 8 bit integer in the lower byte of the message data
-  - **6** *(s8HB)* signed 8 bit integer in the higher byte of the message data
-  - **7** Request or response code of the Opentherm message. The value is directly read from the message. Possible values are:
+  - **UNSIGNED** *(u16)* unsigned 16 bit integer
+  - **SIGNED** *(s16)* signed 16 bit integer
+  - **FLOAT** *(f16)* 16 bit float
+  - **UNSIGNED_BYTE_L** *(u8LB)* unsigned 8 bit integer in the lower byte of the message data
+  - **UNSIGNED_BYTE_H** *(u8HB)* unsigned 8 bit integer in the higher byte of the message data
+  - **SIGNED_BYTE_L** *(s8LB)* signed 8 bit integer in the lower byte of the message data
+  - **SIGNED_BYTE_H** *(s8HB)* signed 8 bit integer in the higher byte of the message data
+  - **REQ_RESP** Request or response code of the Opentherm message. The value is directly read from the message. Possible values are:
     - Master-To-Slave (request)
       - 0 READ-DATA
       - 1 WRITE-DATA
