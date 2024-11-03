@@ -18,7 +18,7 @@ CONF_OPENTHERM_ID = "opentherm_id"
 
 opentherm_ns = cg.esphome_ns.namespace("openthermgw")
 
-OpenThermGW = opentherm_ns.class_("OpenthermGW", cg.Component)
+OpenThermGW = opentherm_ns.class_("OpenthermGW", cg.PollingComponent)
 
 SimpleSwitch = opentherm_ns.class_(
     "SimpleSwitch", switch.Switch, cg.Component
@@ -173,7 +173,7 @@ CONFIG_SCHEMA = cv.Schema(
             cv.ensure_list(CONF_SCHEMA_ACME_OT_OVERRIDE_NUMERIC_SWITCH), cv.Length(min=1, max=200)
             ),
     }
-).extend(cv.COMPONENT_SCHEMA)
+).extend(cv.polling_component_schema("60s"))
 
 
 
