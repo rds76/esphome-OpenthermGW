@@ -1,9 +1,8 @@
 #include "openthermgw.h"
 
-OpenTherm *esphome::openthermgw::OpenthermGW::mOT;
-OpenTherm *esphome::openthermgw::OpenthermGW::sOT;
-esphome::switch_::Switch *esphome::openthermgw::OpenthermGW::switch_dhw_pump_override;
-esphome::switch_::Switch *esphome::openthermgw::OpenthermGW::switch_dhw_pump_override_mode;
+OpenTherm *esphome::openthermgw::OpenthermGW::mOT = nullptr;
+OpenTherm *esphome::openthermgw::OpenthermGW::sOT = nullptr;
+
 std::map<int, std::vector<esphome::openthermgw::OpenthermGW::AcmeSensorInfo *> *> esphome::openthermgw::OpenthermGW::acme_sensor_map;
 std::map<int, std::vector<esphome::openthermgw::OpenthermGW::AcmeBinarySensorInfo *> *> esphome::openthermgw::OpenthermGW::acme_binary_sensor_map;
 std::map<int, std::vector<esphome::openthermgw::OpenthermGW::OverrideBinarySwitchInfo *> *> esphome::openthermgw::OpenthermGW::override_binary_switch_map;
