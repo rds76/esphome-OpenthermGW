@@ -17,7 +17,6 @@ CONF_SLAVE_OUT_PIN = "slave_out_pin"
 CONF_OPENTHERM_ID = "opentherm_id"
 
 opentherm_ns = cg.esphome_ns.namespace("openthermgw")
-local_switch_ns = cg.esphome_ns.namespace("local_switch")
 
 OpenThermGW = opentherm_ns.class_("OpenthermGW", cg.Component)
 
@@ -41,6 +40,17 @@ SimpleNumber = opentherm_ns.class_(
 OverrideBinarySwitch = opentherm_ns.class_(
     "OverrideBinarySwitch", switch.Switch, cg.Component
 )
+
+VALUE_TYPE = {
+    "UNSIGNED": 0,
+    "SIGNED": 1,
+    "FLOAT": 2,
+    "UNSIGNED_BYTE_L": 3,
+    "UNSIGNED_BYTE_H": 4,
+    "SIGNED_BYTE_L": 5,
+    "SIGNED_BYTE_H": 6,
+    "REQ_RESP": 7,
+}
 
 AUTO_LOAD = ['sensor', 'binary_sensor', 'switch', 'number']
 MULTI_CONF = False
