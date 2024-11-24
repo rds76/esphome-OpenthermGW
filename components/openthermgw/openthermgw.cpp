@@ -37,7 +37,7 @@ namespace openthermgw {
         
         // Check validity of the original request
         if(!(status != OpenThermResponseStatus::SUCCESS || mOT->parity(request))) {
-            ESP_LOGV(TAG, "Opentherm request valid, processing overrides...");
+            ESP_LOGD(TAG, "Opentherm request valid, processing overrides...");
             
 
             // override binary
@@ -83,7 +83,7 @@ namespace openthermgw {
 
             // check validity of modified request
             if(!mOT->isValidRequest(request)){
-                ESP_LOGV(TAG, "Opentherm request is invalid, returning here...");
+                ESP_LOGD(TAG, "Opentherm request is invalid, returning here...");
                 return;
             }
         }
