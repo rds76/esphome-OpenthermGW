@@ -37,7 +37,7 @@ namespace openthermgw {
         
         // Check validity of the original request
         if(!(status != OpenThermResponseStatus::SUCCESS || mOT->parity(request))) {
-            ESP_LOGD(TAG, "Opentherm request valid, processing overrides...");
+            ESP_LOGD(TAG, "Opentherm request is valid, processing with overrides...");
             
 
             // override binary
@@ -83,7 +83,7 @@ namespace openthermgw {
 
             // check validity of modified request
             if(!mOT->isValidRequest(request)){
-                ESP_LOGD(TAG, "Opentherm request is invalid, returning here...");
+                ESP_LOGW(TAG, "Opentherm request is invalid, returning here...");
                 return;
             }
         }
@@ -99,7 +99,7 @@ namespace openthermgw {
             // only if ACK reponse is received, process the data.
             if(sOT->isValidResponse(response))
             {
-                ESP_LOGD(TAG, "Opentherm response valid, processing sensors...");
+                ESP_LOGD(TAG, "Opentherm response is valid, processing sensors...");
                 
                 // acme
                 auto itSensorList = acme_sensor_map.find((byte) sOT->getDataID(response));
