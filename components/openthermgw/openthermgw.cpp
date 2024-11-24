@@ -36,54 +36,57 @@ namespace openthermgw {
         ESP_LOGD(TAG, "Opentherm request [MessageType: %s, DataID: %d, Data: %x, status %s]", mOT->messageTypeToString(mOT->getMessageType(request)), requestDataID, requestDataValue, sOT->statusToString(status));
         
         // Check validity of the original request
-        if(status != OpenThermResponseStatus::SUCCESS || mOT->parity(request))
-            return;
+        if(!(status != OpenThermResponseStatus::SUCCESS || mOT->parity(request))) {
+            ESP_LOGV(TAG, "Opentherm request valid, processing overrides...");
+            
 
-        // override binary
-        auto itBinaryOverrideList = override_binary_switch_map.find(requestDataID);
-        std::vector<OverrideBinarySwitchInfo *> *pBinaryOverrideList =  itBinaryOverrideList != override_binary_switch_map.end() ? itBinaryOverrideList->second : nullptr;
-        if(pBinaryOverrideList != nullptr)
-        {
-            for(OverrideBinarySwitchInfo *pOverride: *pBinaryOverrideList)
+            // override binary
+            auto itBinaryOverrideList = override_binary_switch_map.find(requestDataID);
+            std::vector<OverrideBinarySwitchInfo *> *pBinaryOverrideList =  itBinaryOverrideList != override_binary_switch_map.end() ? itBinaryOverrideList->second : nullptr;
+            if(pBinaryOverrideList != nullptr)
             {
-                if(pOverride->binaryswitch->state && pOverride->valueswitch != nullptr)
+                for(OverrideBinarySwitchInfo *pOverride: *pBinaryOverrideList)
                 {
-                    unsigned short origbitfield = mOT->getUInt(request);
-                    bool origvalue = origbitfield & (1<<(pOverride->bit - 1));
-                    if(origvalue != pOverride->valueswitch->state)
+                    if(pOverride->binaryswitch->state && pOverride->valueswitch != nullptr)
                     {
-                        ESP_LOGD(TAG, "Overriding bit %d (was %d, overriding to %d)", pOverride->bit, origvalue, pOverride->valueswitch->state);
+                        unsigned short origbitfield = mOT->getUInt(request);
+                        bool origvalue = origbitfield & (1<<(pOverride->bit - 1));
+                        if(origvalue != pOverride->valueswitch->state)
+                        {
+                            ESP_LOGD(TAG, "Overriding bit %d (was %d, overriding to %d)", pOverride->bit, origvalue, pOverride->valueswitch->state);
+                        }
+                        unsigned short newbitfield = (origbitfield & (0xffff - (1<<(pOverride->bit - 1)))) | (pOverride->valueswitch->state << (pOverride->bit - 1));
+                        request = mOT->buildRequest(mOT->getMessageType(request), mOT->getDataID(request), newbitfield);
                     }
-                    unsigned short newbitfield = (origbitfield & (0xffff - (1<<(pOverride->bit - 1)))) | (pOverride->valueswitch->state << (pOverride->bit - 1));
-                    request = mOT->buildRequest(mOT->getMessageType(request), mOT->getDataID(request), newbitfield);
                 }
             }
-        }
 
-        // override numeric
-        auto itNumericOverrideList = override_numeric_switch_map.find(requestDataID);
-        std::vector<OverrideNumericSwitchInfo *> *pNumericOverrideList = itNumericOverrideList != override_numeric_switch_map.end() ? itNumericOverrideList->second : nullptr;
-        if(pNumericOverrideList != nullptr)
-        {
-            for(OverrideNumericSwitchInfo *pOverride: *pNumericOverrideList)
+            // override numeric
+            auto itNumericOverrideList = override_numeric_switch_map.find(requestDataID);
+            std::vector<OverrideNumericSwitchInfo *> *pNumericOverrideList = itNumericOverrideList != override_numeric_switch_map.end() ? itNumericOverrideList->second : nullptr;
+            if(pNumericOverrideList != nullptr)
             {
-                if(pOverride->binaryswitch->state && pOverride->valuenumber != nullptr)
+                for(OverrideNumericSwitchInfo *pOverride: *pNumericOverrideList)
                 {
-                    unsigned short origdata = requestDataValue;
-                    unsigned short newdata = convert_to_data(pOverride->valuenumber->state, pOverride->valueType);
-                    if(origdata != newdata)
+                    if(pOverride->binaryswitch->state && pOverride->valuenumber != nullptr)
                     {
-                        ESP_LOGD(TAG, "Overriding value (was %d, overriding to %d (%d))", origdata, pOverride->valuenumber->state, newdata);
+                        unsigned short origdata = requestDataValue;
+                        unsigned short newdata = convert_to_data(pOverride->valuenumber->state, pOverride->valueType);
+                        if(origdata != newdata)
+                        {
+                            ESP_LOGD(TAG, "Overriding value (was %d, overriding to %d (%d))", origdata, pOverride->valuenumber->state, newdata);
+                        }
+                        request = mOT->buildRequest(mOT->getMessageType(request), mOT->getDataID(request), newdata);
                     }
-                    request = mOT->buildRequest(mOT->getMessageType(request), mOT->getDataID(request), newdata);
                 }
             }
+
+            // check validity of modified request
+            if(!mOT->isValidRequest(request)){
+                ESP_LOGV(TAG, "Opentherm request is invalid, returning here...");
+                return;
+            }
         }
-
-        // check validity of modified request
-        if(!mOT->isValidRequest(request))
-            return;
-
         // Send the request
         unsigned long response = mOT->sendRequest(request);
 
