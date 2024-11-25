@@ -15,6 +15,7 @@ CONF_MASTER_OUT_PIN = "master_out_pin"
 CONF_SLAVE_IN_PIN = "slave_in_pin"
 CONF_SLAVE_OUT_PIN = "slave_out_pin"
 CONF_OPENTHERM_ID = "opentherm_id"
+CONF_MONITOR_ONLY = "monitor_only"
 
 opentherm_ns = cg.esphome_ns.namespace("openthermgw")
 
@@ -159,6 +160,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Required(CONF_MASTER_OUT_PIN): pins.internal_gpio_input_pin_number,
         cv.Required(CONF_SLAVE_IN_PIN): pins.internal_gpio_input_pin_number,
         cv.Required(CONF_SLAVE_OUT_PIN): pins.internal_gpio_input_pin_number,
+        cv.Optional(CONF_MONITOR_ONLY, default='false'): cv.boolean,
 
         cv.Optional(CONF_SENSOR_ACME_OT_LIST): cv.All(
             cv.ensure_list(CONF_SCHEMA_ACME_OT), cv.Length(min=1, max=200)
@@ -188,6 +190,7 @@ async def to_code(config):
     cg.add(var.set_master_out_pin(config[CONF_MASTER_OUT_PIN]))
     cg.add(var.set_slave_in_pin(config[CONF_SLAVE_IN_PIN]))
     cg.add(var.set_slave_out_pin(config[CONF_SLAVE_OUT_PIN]))
+    cg.add(var.set_monitor_only(config[CONF_MONITOR_ONLY]))
 
     cg.add_library("ihormelnyk/OpenTherm Library", "1.1.5")
 
