@@ -14,9 +14,7 @@ namespace openthermgw {
     void OpenthermGW::set_master_in_pin(uint8_t pin) { master_in_pin_ = pin; }
     void OpenthermGW::set_master_out_pin(uint8_t pin) { master_out_pin_ = pin; }
     void OpenthermGW::set_slave_in_pin(uint8_t pin) { slave_in_pin_ = pin; }
-    void OpenthermGW::set_slave_out_pin(uint8_t pin) { slave_out_pin_ = pin; }
-
-    void OpenthermGW::set_monitor_only(bool val) { monitor_only_ = val; }
+    void OpenthermGW::set_slave_out_pin(uint8_t pin) { slave_out_pin_ = pin; }    
         
     void IRAM_ATTR OpenthermGW::mHandleInterrupt()
     {
@@ -36,9 +34,10 @@ namespace openthermgw {
 
 
         ESP_LOGD(TAG, "Opentherm request [MessageType: %s, DataID: %d, Data: %x, status %s]", mOT->messageTypeToString(mOT->getMessageType(request)), requestDataID, requestDataValue, sOT->statusToString(status));
-        
+
+#ifndef OPENTHERM_GW_MONITOR_ONLY        
         // Check validity of the original request
-        if(!monitor_only_ && (status == OpenThermResponseStatus::SUCCESS) && !mOT->parity(request)) {
+        if((status == OpenThermResponseStatus::SUCCESS) && !mOT->parity(request)) {
             ESP_LOGD(TAG, "Opentherm request is valid, processing with overrides...");
             
             // override binary
@@ -88,6 +87,7 @@ namespace openthermgw {
                 return;
             }
         }
+#endif        
         // Send the request
         unsigned long response = mOT->sendRequest(request);
 

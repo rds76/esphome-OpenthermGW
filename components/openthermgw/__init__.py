@@ -192,6 +192,10 @@ async def to_code(config):
     cg.add(var.set_slave_out_pin(config[CONF_SLAVE_OUT_PIN]))
     cg.add(var.set_monitor_only(config[CONF_MONITOR_ONLY]))
 
+    if config[CONF_MONITOR_ONLY]:
+        cg.add_define("OPENTHERM_GW_MONITOR_ONLY")
+    
+
     cg.add_library("ihormelnyk/OpenTherm Library", "1.1.5")
 
     if CONF_SENSOR_ACME_OT_LIST in config:

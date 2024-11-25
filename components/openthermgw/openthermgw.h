@@ -73,8 +73,6 @@ class OpenthermGW: public PollingComponent
     uint8_t slave_in_pin_ = -1;
     uint8_t slave_out_pin_ = -1;
     
-    bool monitor_only_ = false;
-    
     public:
 
     static OpenTherm *mOT;
@@ -129,8 +127,7 @@ class OpenthermGW: public PollingComponent
     void set_master_out_pin(uint8_t pin);
     void set_slave_in_pin(uint8_t pin);
     void set_slave_out_pin(uint8_t pin);
-
-    void set_monitor_only(bool val);
+    
         
     void add_sensor_acme(sensor::Sensor *s, byte messageid, bool valueonrequest, int valuetype);
     void add_sensor_acme_binary(binary_sensor::BinarySensor *s, byte messageid, bool valueonrequest, int bit);
