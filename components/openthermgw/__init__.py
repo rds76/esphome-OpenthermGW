@@ -190,7 +190,6 @@ async def to_code(config):
     cg.add(var.set_master_out_pin(config[CONF_MASTER_OUT_PIN]))
     cg.add(var.set_slave_in_pin(config[CONF_SLAVE_IN_PIN]))
     cg.add(var.set_slave_out_pin(config[CONF_SLAVE_OUT_PIN]))
-    cg.add(var.set_monitor_only(config[CONF_MONITOR_ONLY]))
 
     if config[CONF_MONITOR_ONLY]:
         cg.add_define("OPENTHERM_GW_MONITOR_ONLY")
