@@ -38,10 +38,9 @@ namespace openthermgw {
         ESP_LOGD(TAG, "Opentherm request [MessageType: %s, DataID: %d, Data: %x, status %s]", mOT->messageTypeToString(mOT->getMessageType(request)), requestDataID, requestDataValue, sOT->statusToString(status));
         
         // Check validity of the original request
-        if(!(status != OpenThermResponseStatus::SUCCESS || mOT->parity(request))) {
+        if(!monitor_only_ && (status == OpenThermResponseStatus::SUCCESS) && !mOT->parity(request)) {
             ESP_LOGD(TAG, "Opentherm request is valid, processing with overrides...");
             
-
             // override binary
             auto itBinaryOverrideList = override_binary_switch_map.find(requestDataID);
             std::vector<OverrideBinarySwitchInfo *> *pBinaryOverrideList =  itBinaryOverrideList != override_binary_switch_map.end() ? itBinaryOverrideList->second : nullptr;
@@ -85,7 +84,7 @@ namespace openthermgw {
 
             // check validity of modified request
             if(!mOT->isValidRequest(request)){
-                ESP_LOGW(TAG, "Opentherm request is invalid, returning here...");
+                ESP_LOGW(TAG, "Opentherm request is invalid.");
                 return;
             }
         }
@@ -176,7 +175,7 @@ namespace openthermgw {
                     }
                 }
             }
-        }
+        } else ESP_LOGE(TAG, "Opentherm response failed.");        
     }
 
 
