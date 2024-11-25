@@ -33,8 +33,7 @@ external_components:
 ```
 
 ### Hardware configuration
-You need to configure the pins, on which the Opentherm gateway is connected. Please note - `master` is the thermostat end, `slave` is the boiler end.
-`monitor_only` set to True disables GW to change any values captured data
+You need to configure the pins, on which the Opentherm gateway is connected. Please note - `master` is the thermostat end, `slave` is the boiler end. `monitor_only` set to True disables GW to change any captured data
 
 ```yaml
 openthermgw:
