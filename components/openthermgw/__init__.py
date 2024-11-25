@@ -160,7 +160,7 @@ CONFIG_SCHEMA = cv.Schema(
         cv.Required(CONF_MASTER_OUT_PIN): pins.internal_gpio_input_pin_number,
         cv.Required(CONF_SLAVE_IN_PIN): pins.internal_gpio_input_pin_number,
         cv.Required(CONF_SLAVE_OUT_PIN): pins.internal_gpio_input_pin_number,
-        cv.Optional(CONF_MONITOR_ONLY, default='false'): cv.boolean,
+        cv.Optional(CONF_MONITOR_ONLY, default=False): cv.boolean,
 
         cv.Optional(CONF_SENSOR_ACME_OT_LIST): cv.All(
             cv.ensure_list(CONF_SCHEMA_ACME_OT), cv.Length(min=1, max=200)
