@@ -1,3 +1,11 @@
+Modified version of latest branch from [esphome-OpenthermGW by Reproduktor](https:/github.com/Reproduktor/esphome-OpenthermGW). Changed:
+ - named `value_types`
+ - `monitor_only` flag
+ - compatibility with latest version of Opentherm lib 1.1.5
+ - fixed bug from latest branch
+
+ *Tested and operated with Geminox THRi2-17 boiler and QAA73 thermostat*
+
 # OpenthermGW for ESPHome / Home assistant
  
 (as External component, by Reproduktor)
@@ -33,7 +41,7 @@ external_components:
 ```
 
 ### Hardware configuration
-You need to configure the pins, on which the Opentherm gateway is connected. Please note - `master` is the thermostat end, `slave` is the boiler end. `monitor_only` set to True disables GW to change any captured data
+You need to configure the pins, on which the Opentherm gateway is connected. Please note - `master` is the thermostat end, `slave` is the boiler end. `monitor_only` set to True to disable GW to override any captured data
 
 ```yaml
 openthermgw:
