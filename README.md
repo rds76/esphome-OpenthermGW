@@ -1,4 +1,4 @@
-Modified version of latest branch from [esphome-OpenthermGW by Reproduktor](https:/github.com/Reproduktor/esphome-OpenthermGW). Changed:
+Modified version of latest branch from [esphome-OpenthermGW by Reproduktor](/Reproduktor/esphome-OpenthermGW). Changed:
  - named `value_types`
  - `monitor_only` flag
  - compatibility with latest version of Opentherm lib 1.1.5
