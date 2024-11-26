@@ -312,6 +312,42 @@ openthermgw:
       value_on_request: false
       value_type: FLOAT
 
+    # for system date-time
+    - id: otgw_year_raw
+      message_id: 22
+      value_type: UNSIGNED
+      on_raw_value:
+        then:
+          - component.update: otgw_date_time
+    - id: otgw_md_raw
+      message_id: 21
+      value_type: UNSIGNED      
+      on_raw_value:
+        then:
+          - component.update: otgw_date_time
+    - id: otgw_time_raw
+      message_id: 20
+      value_type: UNSIGNED   
+      on_raw_value:
+        then:
+          - component.update: otgw_date_time 
+
+  text_sensor:
+  # date-time in text format yyyy-mm-dd h:m, time is used for termostat programs, good to check is synced via some HA automatition
+  - platform: template
+    id: otgw_date_time
+    name: "ACME System Date Time"
+    update_interval: never
+    lambda: |-      
+      if (!isnan(id(otgw_time_raw).raw_state) && !isnan(id(otgw_md_raw).raw_state) && !isnan(id(otgw_year_raw).raw_state)) {        
+        uint16_t t = static_cast<uint16_t>(id(otgw_time_raw).raw_state);
+        uint16_t md = static_cast<uint16_t>(id(otgw_md_raw).raw_state);
+        uint16_t y = static_cast<uint16_t>(id(otgw_year_raw).raw_state);
+        return str_sprintf("%04d-%02d-%02d %02d:%02d", y, (md >> 8) & 0xff, md & 0xff, (t >> 8) & 0x1f , t & 0xff);
+      } else {
+        return {}; 
+      } 
+
   acme_opentherm_binary_sensors:
     - name: "ACME Boiler fault"
       message_id: 0
