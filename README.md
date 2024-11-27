@@ -318,19 +318,14 @@ openthermgw:
       value_type: UNSIGNED
       on_raw_value:
         then:
+          # year gonna be the last part of date-time, lets update our sensor
           - component.update: otgw_date_time
     - id: otgw_md_raw
       message_id: 21
-      value_type: UNSIGNED      
-      on_raw_value:
-        then:
-          - component.update: otgw_date_time
+      value_type: UNSIGNED            
     - id: otgw_time_raw
       message_id: 20
-      value_type: UNSIGNED   
-      on_raw_value:
-        then:
-          - component.update: otgw_date_time   
+      value_type: UNSIGNED         
 
   acme_opentherm_binary_sensors:
     - name: "ACME Boiler fault"
